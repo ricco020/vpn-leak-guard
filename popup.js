@@ -131,11 +131,14 @@
     const leaked = info ? pub.filter((ip) => ip !== info.ip) : pub;
     const homeLeak = homeIp && pub.includes(homeIp) && (!info || info.ip !== homeIp);
     if (blocking) {
-      setState("webrtc-state", "ok", "BLOCKED");
-      $("webrtc-value").textContent = pub.length ? pub.join(", ") : "No public candidate";
+      // Chrome exempts extension pages from webRTCIPHandlingPolicy (measured
+      // 2026-10-17): this probe still sees candidates while real websites get
+      // none. Say so instead of pretending the probe is the proof.
+      setState("webrtc-state", "ok", "BLOCKED ON SITES");
+      $("webrtc-value").textContent = "Websites get no candidate";
       $("webrtc-sub").textContent = pub.length
-        ? "Blocking is on but a public address still came back: re-test, then report it."
-        : "Chrome only lets WebRTC use the proxied route.";
+        ? `Without blocking, WebRTC would expose ${pub.join(", ")}. Confirm from a real page with the full test below.`
+        : "Chrome only lets WebRTC use the proxied route. Confirm from a real page with the full test below.";
     } else if (pub.length === 0) {
       setState("webrtc-state", "ok", "SILENT");
       $("webrtc-value").textContent = "No public candidate";
@@ -169,7 +172,7 @@
 
     // Verdict
     const homeExposed = !!(homeIp && info && info.ip === homeIp);
-    if (leaked.length || homeLeak) {
+    if (!blocking && (leaked.length || homeLeak)) {
       setVerdict("is-bad", "Leak detected", "WebRTC reveals another IP",
         "Websites can read an address your VPN is supposed to hide. Turn on blocking below, or use a VPN that blocks WebRTC.");
       $("fix").classList.remove("hidden");
@@ -181,8 +184,8 @@
       setVerdict("is-warn", "Incomplete", "Could not read your public IP",
         "The WebRTC part ran, but without a public IP the comparison is partial.");
     } else if (blocking) {
-      setVerdict("is-ok", "Protected", "No WebRTC leak",
-        "WebRTC is restricted to the proxied route. Keep it on while you use a VPN.");
+      setVerdict("is-ok", "Protected", "WebRTC blocked on websites",
+        "Chrome restricts WebRTC to the proxied route on every site. Keep it on while you use a VPN.");
     } else if (pub.length === 0) {
       setVerdict("is-ok", "Protected", "No WebRTC leak",
         "No public address came back through WebRTC. Blocking is still recommended on a VPN.");
@@ -193,7 +196,7 @@
       setVerdict("is-ok", "Protected", "No WebRTC leak",
         "WebRTC only shows your VPN address, and it is not your home IP.");
     }
-    await chrome.storage.local.set({ lastTest: { at: Date.now(), ip: info && info.ip, leak: leaked.length > 0 || !!homeLeak } });
+    await chrome.storage.local.set({ lastTest: { at: Date.now(), ip: info && info.ip, leak: !blocking && (leaked.length > 0 || !!homeLeak) } });
     return info;
   }
 
