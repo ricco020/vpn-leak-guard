@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "VPN Leak Guard: WebRTC & IP Leak Test",
+  "short_name": "VPN Leak Guard",
+  "version": "1.0.0",
+  "description": "One-click WebRTC and IP leak test, WebRTC leak blocking, and VPN drop alerts. Know if your VPN really hides your IP.",
+  "minimum_chrome_version": "110",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "VPN Leak Guard: run a leak test",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["privacy", "storage", "alarms", "notifications"],
+  "host_permissions": ["https://ipwho.is/*", "https://api.ipify.org/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://extensionpay.com/*"],
+      "js": ["vendor/ExtPay.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
