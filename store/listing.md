@@ -43,8 +43,9 @@ Pro: 4.99 USD one-time (launch price). Alternative to test later: 1.99 USD/month
 
 ## Assets
 - Icon 128: icons/icon-128.png (generated 17/10/2026, image.py, 0.053 USD).
-- Screenshots 1280x800: to capture from the popup (verdict protected, verdict leak, blocking on, Pro alert). Not done yet.
-- Small promo tile 440x280: not done yet.
+- Screenshots 1280x800 (4): store/assets/screenshot-01..04.png, made 18/10/2026 from the real popup with documentation IPs (203.0.113.42 as VPN, 198.51.100.7 as home, no real IP), composed with the extension's own fonts (tools: /tmp/cws/capture.py + compose.py, kept in tools/store-assets.py).
+- Small promo tile 440x280: store/assets/promo-tile-440x280.png.
+- Chrome Web Store publisher: d2668f16-53c2-4f15-b0cb-b06a63206b45 (registered 18/10/2026, display name VPNSmith). ExtensionPay: extension `vpn-leak-guard` registered 18/10/2026, plan `pro` 4.99 USD once; Stripe not connected yet.
 
 ## Cross-links to our sites (all tracked)
 - /go/nordvpn?src=ext-leak-guard&pos=leak (CJ, sid = ext-leak-guard)
