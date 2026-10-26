@@ -9,7 +9,7 @@ One click tells you whether your VPN really hides your IP:
 - **Home IP**: save your real IP once, and the guard can prove the VPN hides it.
 - **Pro**: background VPN drop alerts (desktop notification when the public IP falls back to the home IP). Payment through ExtensionPay.
 
-Built by the team behind [vpnsmith.com](https://www.vpnsmith.com). No analytics, no servers. See [PRIVACY.md](PRIVACY.md).
+Built by the team behind [vpnsmith.com](https://www.vpnsmith.com?src=github&ref=gh-vpn-leak-guard). No analytics, no servers. See [PRIVACY.md](PRIVACY.md).
 
 ## Load it unpacked
 
