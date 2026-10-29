@@ -18,7 +18,7 @@
     <section id="verdict" class="verdict is-testing" aria-live="polite">
       <div class="verdict-kicker" id="verdict-kicker">Scanning</div>
       <h1 class="verdict-title" id="verdict-title">Testing your connection</h1>
-      <p class="verdict-note" id="verdict-note">Public IP, WebRTC candidates and timezone are compared in your browser only.</p>
+      <p class="verdict-note" id="verdict-note">Public IP, WebRTC, DNS resolvers and timezone, checked in one click.</p>
     </section>
 
     <section class="rows">
@@ -31,6 +31,11 @@
         <div class="row-head"><span class="row-label">WEBRTC</span><span class="row-state" id="webrtc-state">…</span></div>
         <div class="row-main mono" id="webrtc-value">…</div>
         <div class="row-sub" id="webrtc-sub"></div>
+      </div>
+      <div class="row" id="row-dns">
+        <div class="row-head"><span class="row-label">DNS</span><span class="row-state" id="dns-state">…</span></div>
+        <div class="row-main mono" id="dns-value">…</div>
+        <div class="row-sub" id="dns-sub"></div>
       </div>
       <div class="row" id="row-tz">
         <div class="row-head"><span class="row-label">TIMEZONE</span><span class="row-state" id="tz-state">…</span></div>
@@ -54,31 +59,30 @@
 
     <section id="fix" class="fix hidden">
       <div class="fix-title">FIX IT</div>
+      <a class="card" id="cta-compare" target="_blank" rel="noopener">
+        <span class="card-k">Compare VPNs</span>
+        <span class="card-t">Paid VPN or your own server: which one stops this leak</span>
+        <span class="card-s">Comparison on vpnsmith.com. It contains affiliate links: we may earn a commission.</span>
+      </a>
       <a class="card" id="cta-nord" target="_blank" rel="noopener">
         <span class="card-k">Managed VPN</span>
         <span class="card-t">NordVPN: its Chrome extension includes a WebRTC leak blocker</span>
-        <span class="card-s">Reviewed on vpnsmith.com. Affiliate link: we may earn a commission.</span>
-      </a>
-      <a class="card" id="cta-contabo" target="_blank" rel="noopener">
-        <span class="card-k">Self-hosted</span>
-        <span class="card-t">Run your own WireGuard VPN on a Contabo VPS</span>
-        <span class="card-s">Free config generator on vpnsmith.com. Affiliate link.</span>
+        <span class="card-s">Affiliate link: we may earn a commission.</span>
       </a>
     </section>
 
     <section class="pro">
       <div class="pro-head">
-        <span class="pro-badge" id="pro-badge">PRO</span>
+        <span class="pro-badge active" id="pro-badge">FREE</span>
         <strong>VPN drop alerts</strong>
       </div>
       <p class="pro-text" id="pro-text">Get a desktop notification the moment your public IP falls back to your home IP. Checks every 2 minutes in the background.</p>
       <div class="pro-actions">
-        <label class="switch compact hidden" id="watch-wrap">
+        <label class="switch compact" id="watch-wrap">
           <input type="checkbox" id="watch-toggle" />
           <span class="switch-track"><span class="switch-thumb"></span></span>
           <span class="switch-text"><strong>Watch my VPN</strong></span>
         </label>
-        <button id="upgrade" class="primary" type="button">Upgrade to Pro</button>
       </div>
     </section>
 
@@ -91,7 +95,6 @@
     </footer>
   </main>
   <script src="config.js"></script>
-  <script src="vendor/ExtPay.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

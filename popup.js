@@ -4,13 +4,11 @@
   const $ = (id) => document.getElementById(id);
   const links = VLG.links;
   $("cta-nord").href = links.nordvpn;
-  $("cta-contabo").href = links.contabo;
+  $("cta-compare").href = links.compare;
   $("link-full").href = links.fullTest;
   $("link-wg").href = links.wireguard;
   $("link-privacy").href = links.privacy;
 
-  let extpay = null;
-  try { extpay = ExtPay(VLG.EXTPAY_ID); } catch (e) { extpay = null; }
 
   const PRIVATE_V4 = /^(10\.|127\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|0\.)/;
   const isIPv4 = (s) => /^\d{1,3}(\.\d{1,3}){3}$/.test(s);
@@ -86,6 +84,28 @@
     });
   }
 
+  // DNS leak test through bash.ws: get a fresh id, make the browser resolve a few
+  // random subdomains of it (the HTTPS requests fail, only the DNS lookup matters),
+  // then read which resolvers asked bash.ws for those names.
+  async function dnsLeakTest() {
+    try {
+      const id = (await (await fetch(VLG.DNS_API + "/id", { cache: "no-store" })).text()).trim();
+      if (!/^[a-z0-9]{6,40}$/i.test(id)) return null;
+      await Promise.all([1, 2, 3, 4, 5].map((n) =>
+        Promise.race([
+          fetch(`https://${n}.${id}.bash.ws/`, { mode: "no-cors", cache: "no-store" }).catch(() => {}),
+          new Promise((r) => setTimeout(r, 2500))
+        ])));
+      const rows = await (await fetch(`${VLG.DNS_API}/dnsleak/test/${id}?json`, { cache: "no-store" })).json();
+      if (!Array.isArray(rows)) return null;
+      const dns = rows.filter((r) => r.type === "dns");
+      const concl = (rows.find((r) => r.type === "conclusion") || {}).ip || "";
+      return { dns, leaking: /may be leaking/i.test(concl), conclusion: concl };
+    } catch (e) {
+      return null;
+    }
+  }
+
   async function getPolicy() {
     try {
       const d = await chrome.privacy.network.webRTCIPHandlingPolicy.get({});
@@ -102,11 +122,11 @@
   async function runTest() {
     setVerdict("is-testing", "Scanning", "Testing your connection",
       "Public IP, WebRTC candidates and timezone are compared in your browser only.");
-    ["ip", "webrtc", "tz"].forEach((k) => { setState(k + "-state", "", "…"); $(k + "-value").textContent = "…"; $(k + "-sub").textContent = ""; });
+    ["ip", "webrtc", "dns", "tz"].forEach((k) => { setState(k + "-state", "", "…"); $(k + "-value").textContent = "…"; $(k + "-sub").textContent = ""; });
     $("fix").classList.add("hidden");
 
     const { homeIp = null } = await chrome.storage.local.get("homeIp");
-    const [info, rtc, policy] = await Promise.all([lookupIp(), webrtcIps(), getPolicy()]);
+    const [info, rtc, policy, dnsRes] = await Promise.all([lookupIp(), webrtcIps(), getPolicy(), dnsLeakTest()]);
     const blocking = policy && policy.value === "disable_non_proxied_udp";
     $("block-toggle").checked = !!blocking;
 
@@ -128,7 +148,11 @@
     const pub = [...rtc.entries()].filter(([ip, t]) => t !== "mdns" && !isPrivate(ip)).map(([ip]) => ip);
     const local = [...rtc.entries()].filter(([ip, t]) => t !== "mdns" && isPrivate(ip)).map(([ip]) => ip);
     const mdns = [...rtc.values()].filter((t) => t === "mdns").length;
-    const leaked = info ? pub.filter((ip) => ip !== info.ip) : pub;
+    // Dual-stack: an IPv4 candidate next to an IPv6 public IP (or the reverse) is
+    // the other address family of the same connection, not proof of a leak.
+    const sameFamily = (x, y) => isIPv6(x) === isIPv6(y);
+    const leaked = info ? pub.filter((ip) => ip !== info.ip && sameFamily(ip, info.ip)) : pub;
+    const otherFamily = info ? pub.filter((ip) => ip !== info.ip && !sameFamily(ip, info.ip)) : [];
     const homeLeak = homeIp && pub.includes(homeIp) && (!info || info.ip !== homeIp);
     if (blocking) {
       // Chrome exempts extension pages from webRTCIPHandlingPolicy (measured
@@ -147,10 +171,37 @@
       setState("webrtc-state", "bad", "LEAK");
       $("webrtc-value").textContent = (leaked.length ? leaked : pub).join(", ");
       $("webrtc-sub").textContent = "This address differs from your public IP: sites can read it through WebRTC.";
+    } else if (otherFamily.length && !pub.includes(info.ip)) {
+      setState("webrtc-state", "warn", isIPv6(info.ip) ? "IPV4 VISIBLE" : "IPV6 VISIBLE");
+      $("webrtc-value").textContent = otherFamily.join(", ");
+      $("webrtc-sub").textContent = "WebRTC shows your other address family. If your VPN does not cover it, sites see it: save your home IP or turn on blocking.";
     } else {
       setState("webrtc-state", "ok", "MATCH");
       $("webrtc-value").textContent = pub.join(", ");
       $("webrtc-sub").textContent = local.length ? `Also exposes local ${local.join(", ")}` : "Same address as your public IP.";
+    }
+
+    // DNS row
+    let dnsLeak = false;
+    if (!dnsRes) {
+      setState("dns-state", "", "N/A");
+      $("dns-value").textContent = "DNS test unavailable";
+      $("dns-sub").textContent = "The bash.ws test did not answer. Re-test in a minute.";
+    } else if (dnsRes.dns.length === 0) {
+      setState("dns-state", "", "N/A");
+      $("dns-value").textContent = "No resolver seen";
+      $("dns-sub").textContent = dnsRes.conclusion || "Re-test in a minute.";
+    } else {
+      const orgs = [...new Set(dnsRes.dns.map((d) => [d.org || d.asn, (d.country || "").toUpperCase()].filter(Boolean).join(" ")))];
+      $("dns-value").textContent = `${dnsRes.dns.length} resolver${dnsRes.dns.length > 1 ? "s" : ""}: ${orgs.slice(0, 2).join(", ")}${orgs.length > 2 ? "…" : ""}`;
+      dnsLeak = dnsRes.leaking;
+      if (dnsLeak) {
+        setState("dns-state", "bad", "LEAK");
+        $("dns-sub").textContent = "Your DNS requests go to a resolver outside your VPN: your provider can see the sites you visit.";
+      } else {
+        setState("dns-state", "ok", "NO LEAK");
+        $("dns-sub").textContent = "Resolvers match your connection. " + (dnsRes.conclusion || "");
+      }
     }
 
     // Timezone row
@@ -172,7 +223,11 @@
 
     // Verdict
     const homeExposed = !!(homeIp && info && info.ip === homeIp);
-    if (!blocking && (leaked.length || homeLeak)) {
+    if (dnsLeak && !(!blocking && (leaked.length || homeLeak))) {
+      setVerdict("is-bad", "Leak detected", "DNS requests leave your VPN",
+        "Your DNS resolver can log every site you open. Use a VPN with its own DNS and leak protection.");
+      $("fix").classList.remove("hidden");
+    } else if (!blocking && (leaked.length || homeLeak)) {
       setVerdict("is-bad", "Leak detected", "WebRTC reveals another IP",
         "Websites can read an address your VPN is supposed to hide. Turn on blocking below, or use a VPN that blocks WebRTC.");
       $("fix").classList.remove("hidden");
@@ -196,7 +251,7 @@
       setVerdict("is-ok", "Protected", "No WebRTC leak",
         "WebRTC only shows your VPN address, and it is not your home IP.");
     }
-    await chrome.storage.local.set({ lastTest: { at: Date.now(), ip: info && info.ip, leak: !blocking && (leaked.length > 0 || !!homeLeak) } });
+    await chrome.storage.local.set({ lastTest: { at: Date.now(), ip: info && info.ip, leak: !blocking && (leaked.length > 0 || !!homeLeak), dnsLeak } });
     return info;
   }
 
@@ -241,36 +296,16 @@
     runTest();
   });
 
-  // Pro
+  // VPN drop alerts (free)
   async function refreshPro() {
-    let paid = !!VLG.PRO_FREE;
-    if (!paid && extpay) {
-      try { const u = await extpay.getUser(); paid = !!(u && u.paid); } catch (e) { paid = false; }
-    }
     const { watchEnabled = false, homeIp = null } = await chrome.storage.local.get(["watchEnabled", "homeIp"]);
-    if (paid) {
-      $("pro-badge").textContent = VLG.PRO_FREE ? "FREE" : "PRO ACTIVE";
-      $("pro-badge").classList.add("active");
-      $("upgrade").classList.add("hidden");
-      $("watch-wrap").classList.remove("hidden");
-      $("watch-toggle").checked = !!watchEnabled;
-      $("pro-text").textContent = homeIp
-        ? "Background check every 2 minutes. You get a notification if your public IP falls back to your home IP."
-        : "Save your home IP above first: the watch compares against it.";
-    } else {
-      $("pro-badge").textContent = "PRO";
-      $("upgrade").classList.remove("hidden");
-      $("watch-wrap").classList.add("hidden");
-    }
+    $("watch-toggle").checked = !!watchEnabled;
+    $("pro-text").textContent = homeIp
+      ? "Background check every 2 minutes. You get a notification if your public IP falls back to your home IP."
+      : "Save your home IP above first: the watch compares against it.";
   }
   $("watch-toggle").addEventListener("change", async (ev) => {
     await chrome.storage.local.set({ watchEnabled: ev.target.checked });
-  });
-  $("upgrade").addEventListener("click", () => {
-    if (extpay) {
-      try { extpay.openPaymentPage(); return; } catch (e) {}
-    }
-    window.open(links.site, "_blank");
   });
 
   $("rerun").addEventListener("click", runTest);

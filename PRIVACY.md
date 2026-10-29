@@ -10,13 +10,14 @@ VPN Leak Guard is a Chrome extension published by Eric Gerard (vpnsmith.com).
 - **WebRTC test.** The extension opens a local RTCPeerConnection to public STUN servers (Google, Cloudflare) to see which addresses WebRTC would expose. Results are shown to you and never sent anywhere.
 - **Local storage only.** Your saved home IP, the last test result and your settings are stored in Chrome's local extension storage on your device. They are never uploaded.
 - **Chrome WebRTC policy.** With your consent (the toggle), the extension changes Chrome's `webRTCIPHandlingPolicy` setting. You can revert it at any time from the popup.
-- **Pro purchase.** Payments are handled by ExtensionPay (extensionpay.com) and Stripe. The extension only learns whether your copy is paid. We never see your card details.
+- **DNS leak test.** Each test asks `https://bash.ws/` (a public DNS leak test service) for a random test id, makes your browser look up a few random subdomains of `bash.ws`, then reads back the list of DNS resolvers that performed those lookups. bash.ws therefore sees your public IP and your resolvers' IPs, as any website would. Nothing else is sent.
+- **No payments.** Since version 1.0.2 the extension is entirely free and contains no payment code.
 - **Notifications.** The Pro "VPN drop alerts" feature checks your public IP in the background at the interval you chose and shows a desktop notification when it matches your saved home IP. Nothing leaves your device except that IP lookup.
 
 ## What we do not do
 
 - No analytics, no tracking pixels, no fingerprinting.
-- No browsing history access: the extension does not read page content and has no content scripts on websites other than extensionpay.com (payment confirmation).
+- No browsing history access: the extension does not read page content and has no content scripts at all.
 - No selling or sharing of data.
 
 ## Affiliate links

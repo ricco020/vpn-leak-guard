@@ -1,12 +1,5 @@
-// Service worker: Pro "VPN drop" watch + ExtPay bootstrap.
-importScripts("config.js", "vendor/ExtPay.js");
-
-const extpay = ExtPay(VLG.EXTPAY_ID);
-try {
-  extpay.startBackground();
-} catch (e) {
-  // ExtPay not registered yet: the extension keeps working in free mode.
-}
+// Service worker: free "VPN drop" watch.
+importScripts("config.js");
 
 const ALARM = "vlg-watch";
 
@@ -26,13 +19,7 @@ async function getPublicIp() {
 }
 
 async function isPaid() {
-  if (VLG.PRO_FREE) return true;
-  try {
-    const u = await extpay.getUser();
-    return !!(u && u.paid);
-  } catch (e) {
-    return false;
-  }
+  return true; // everything is free since 1.0.2
 }
 
 async function applyWatchState() {
