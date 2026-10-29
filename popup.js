@@ -243,13 +243,13 @@
 
   // Pro
   async function refreshPro() {
-    let paid = false;
-    if (extpay) {
+    let paid = !!VLG.PRO_FREE;
+    if (!paid && extpay) {
       try { const u = await extpay.getUser(); paid = !!(u && u.paid); } catch (e) { paid = false; }
     }
     const { watchEnabled = false, homeIp = null } = await chrome.storage.local.get(["watchEnabled", "homeIp"]);
     if (paid) {
-      $("pro-badge").textContent = "PRO ACTIVE";
+      $("pro-badge").textContent = VLG.PRO_FREE ? "FREE" : "PRO ACTIVE";
       $("pro-badge").classList.add("active");
       $("upgrade").classList.add("hidden");
       $("watch-wrap").classList.remove("hidden");

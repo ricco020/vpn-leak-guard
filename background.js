@@ -26,6 +26,7 @@ async function getPublicIp() {
 }
 
 async function isPaid() {
+  if (VLG.PRO_FREE) return true;
   try {
     const u = await extpay.getUser();
     return !!(u && u.paid);

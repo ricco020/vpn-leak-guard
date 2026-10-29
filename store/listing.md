@@ -4,7 +4,7 @@
 VPN Leak Guard: WebRTC & IP Leak Test
 
 ## Summary (132 max)
-One-click WebRTC and IP leak test, WebRTC leak blocking, and VPN drop alerts. Know if your VPN really hides your IP.
+One-click WebRTC and IP leak test, WebRTC leak blocking, and free VPN drop alerts. Know if your VPN really hides your IP.
 
 ## Category
 Privacy & Security (Productivity > Privacy)
@@ -21,8 +21,8 @@ WHAT IT FIXES
 - Block WebRTC leaks with one toggle. The extension sets Chrome's WebRTC policy to the proxied route only. Video calls keep working on most services. Turn it off any time.
 - Home IP: save your real IP once (while the VPN is off). From then on the guard can prove your VPN hides it, instead of guessing.
 
-PRO: VPN DROP ALERTS
-VPNs disconnect silently. Pro checks your public IP in the background every 2 minutes and shows a desktop notification the moment it falls back to your home IP, with a red badge on the icon. One payment through ExtensionPay (Stripe), no account to create.
+VPN DROP ALERTS (FREE)
+VPNs disconnect silently. Turn on "Watch my VPN" and the guard checks your public IP in the background every 2 minutes, then shows a desktop notification the moment it falls back to your home IP, with a red badge on the icon.
 
 PRIVACY
 No analytics, no servers, no browsing data. The only network requests are the IP lookup (ipwho.is, api.ipify.org) and STUN. Settings and results stay in Chrome's local storage. Full policy: https://github.com/ricco020/vpn-leak-guard/blob/main/PRIVACY.md

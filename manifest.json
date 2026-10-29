@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "VPN Leak Guard: WebRTC & IP Leak Test",
   "short_name": "VPN Leak Guard",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "One-click WebRTC and IP leak test, WebRTC leak blocking, and VPN drop alerts. Know if your VPN really hides your IP.",
   "minimum_chrome_version": "110",
   "icons": {

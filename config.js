@@ -3,6 +3,9 @@
 // never to the partner directly, so attribution stays measurable per source.
 const VLG = {
   EXTPAY_ID: "vpn-leak-guard",
+  // No payment processor is connected to ExtensionPay yet, so nothing can be sold:
+  // the VPN drop watch is free for everyone until it is (1.0.1).
+  PRO_FREE: true,
   SRC: "ext-leak-guard",
   IP_API: "https://ipwho.is/",
   IP_API_FALLBACK: "https://api.ipify.org?format=json",
