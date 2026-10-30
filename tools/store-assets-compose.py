@@ -2,7 +2,7 @@
 # Store rules: the real popup fills most of the frame, a 5-word benefit as title, flat brand background.
 import base64, os
 from playwright.sync_api import sync_playwright
-F = "/tmp/vlg-ext/fonts"; OUT = "/mnt/c/Users/lerer/Desktop/Affil/VpnLeakGuard/store/assets"; os.makedirs(OUT, exist_ok=True)
+F = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "fonts"); ICON = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "icons", "icon-128.png"); OUT = "/mnt/c/Users/lerer/Desktop/Affil/VpnLeakGuard/store/assets"; os.makedirs(OUT, exist_ok=True)
 def b64(p): return base64.b64encode(open(p, "rb").read()).decode()
 fonts = f"""
 @font-face {{ font-family:"Space Grotesk"; src:url(data:font/woff2;base64,{b64(F+'/space-grotesk-700.woff2')}) format("woff2"); font-weight:700; }}
@@ -19,6 +19,12 @@ h1{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:64px;line-he
 p{font-size:22px;line-height:1.5;color:#b3bcc8;margin:0;max-width:500px}
 .shot{position:absolute;right:96px;top:50%;transform:translateY(-50%);width:__SW__;overflow:hidden;border-radius:16px;box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.10)}
 .shot img{width:__SW__;display:block}
+.brand{position:absolute;left:96px;top:56px;display:flex;align-items:center;gap:16px;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:28px;letter-spacing:-.01em}
+.brand img{width:56px;height:56px}
+.pair{position:absolute;right:72px;top:50%;transform:translateY(-50%);display:flex;gap:28px;align-items:flex-start}
+.pair .shot{position:static;transform:none;width:330px}.pair .shot img{width:330px}
+.tag{font-family:"Plex Mono",monospace;font-weight:600;font-size:15px;letter-spacing:.2em;margin:0 0 12px 4px}
+.narrow .left{width:400px}.narrow h1{font-size:54px}.narrow p{font-size:20px;max-width:380px}
 """
 LIME, ORANGE = "#c8ff3c", "#ff6a3d"
 FRAMES = [
@@ -26,18 +32,26 @@ FRAMES = [
   "Public IP, WebRTC, DNS resolvers and timezone, checked in one click. The answer comes first, the details stay folded."),
  ("02-dns-leak", "dns", ORANGE, "DNS LEAK TEST", "Catch DNS leaks too",
   "The browser resolves test names and the extension lists which resolvers answered. A resolver outside your VPN is flagged."),
- ("03-blocked", "blocked", LIME, "ONE-CLICK FIX", "Block WebRTC in one click",
-  "Uses Chrome's own WebRTC policy: no server, no account. Turn it off any time from Settings."),
+ ("03-blocked", ("leak", "blocked"), LIME, "ONE-CLICK FIX", "Leak found, then fixed",
+  "One switch turns on Chrome's own WebRTC policy and the next test comes back clean. No server, no account."),
  ("04-no-leak", "protected", LIME, "CLEAR VERDICT", "A clear answer in seconds",
   "Save your home IP once and the test knows what must never show. Free, including drop alerts."),
 ]
 def html(f):
     key, shot, acc, k, h, p = f
     css = CSS.replace('__SW__', '430px')
-    return f"""<!doctype html><html><head><style>{css.replace('ACC', acc)}</style></head><body>
+    img = lambda n: f'<div class="shot"><img src="data:image/png;base64,{b64("/tmp/cws/shots/"+n+".png")}"></div>'
+    if isinstance(shot, tuple):
+        right = (f'<div class="pair"><div><div class="tag" style="color:{ORANGE}">BEFORE</div>{img(shot[0])}</div>'
+                 f'<div><div class="tag" style="color:{LIME}">AFTER</div>{img(shot[1])}</div></div>')
+        cls = "narrow"
+    else:
+        right, cls = img(shot), ""
+    return f"""<!doctype html><html><head><style>{css.replace('ACC', acc)}</style></head><body class="{cls}">
 <div class="grid"></div><div class="bar"></div>
+<div class="brand"><img src="data:image/png;base64,{b64(ICON)}">VPN Leak Guard</div>
 <div class="left"><div class="k">{k}</div><h1>{h}</h1><p>{p}</p></div>
-<div class="shot"><img src="data:image/png;base64,{b64('/tmp/cws/shots/'+shot+'.png')}"></div></body></html>"""
+{right}</body></html>"""
 with sync_playwright() as pw:
     b = pw.chromium.launch()
     pg = b.new_page(viewport={"width": 1280, "height": 800})
