@@ -66,6 +66,10 @@ def main():
         return
     up = cws.appel("PUT", f"{cws.API}/upload/chromewebstore/v1.1/items/{ITEM}", open(ZIP, "rb").read(),
                    {"Content-Type": "application/zip"})
+    # La reponse du PUT ne porte pas toujours crxVersion (30/10 09:20 : SUCCESS sans version,
+    # 1.0.4 restee 7 h en brouillon non soumis) : relire le brouillon avant de conclure.
+    if up.get("uploadState") == "SUCCESS" and not up.get("crxVersion"):
+        up["crxVersion"] = cws.appel("GET", f"{cws.API}/chromewebstore/v1.1/items/{ITEM}?projection=DRAFT").get("crxVersion")
     if up.get("uploadState") != "SUCCESS" or up.get("crxVersion") != CIBLE:
         journal(f"envoi refuse : {json.dumps(up)[:400]}")
         return
