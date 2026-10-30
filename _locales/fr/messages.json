@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard : test de fuite WebRTC, DNS et IP"
+ },
+ "extDesc": {
+  "message": "Test de fuite WebRTC, DNS et IP gratuit en un clic, blocage WebRTC et alertes de coupure VPN. Sans compte. Interface en anglais."
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard : lancer un test de fuite"
+ }
+}

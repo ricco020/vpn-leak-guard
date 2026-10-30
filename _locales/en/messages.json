@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard: WebRTC, DNS & IP Leak Test"
+ },
+ "extDesc": {
+  "message": "Free WebRTC leak test, DNS leak test and IP check in one click, plus WebRTC leak blocking and VPN drop alerts. No account."
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard: run a leak test"
+ }
+}
