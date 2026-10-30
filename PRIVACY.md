@@ -20,6 +20,11 @@ VPN Leak Guard is a Chrome extension published by Eric Gerard (vpnsmith.com).
 - No browsing history access: the extension does not read page content and has no content scripts at all.
 - No selling or sharing of data.
 
+## Pages opened by the extension
+
+- **On first install only** (not on updates), one tab opens the full leak test on vpnsmith.com, because Chrome exempts extension pages from the WebRTC policy and a regular tab is the only real check.
+- **After removal**, Chrome opens a vpnsmith.com page comparing VPN options. The address is fixed: nothing about you or your test results is added to it.
+
 ## Affiliate links
 
 Links in the popup to vpnsmith.com, NordVPN and Contabo are affiliate links: if you buy through them we may earn a commission at no cost to you. Clicking is always your choice.

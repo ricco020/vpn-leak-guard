@@ -25,6 +25,14 @@ const VLG = {
     nordvpn: "https://www.vpnsmith.com/go/nordvpn?src=ext-leak-guard&pos=leak",
     contabo: "https://www.vpnsmith.com/go/contabo-vps-2y?src=ext-leak-guard&pos=selfhost",
     site: "https://www.vpnsmith.com/?utm_source=chrome-extension&utm_medium=extension&utm_campaign=vpn-leak-guard",
+    // 1.0.4: opened once, on first install only (never on update). The popup cannot
+    // prove a WebRTC block (Chrome exempts extension pages), so the first step is
+    // the full test in a regular tab.
+    welcome:
+      "https://www.vpnsmith.com/en/tools/ip-leak-test?utm_source=chrome-extension&utm_medium=extension&utm_campaign=vpn-leak-guard&utm_content=welcome",
+    // Shown by Chrome after removal. No data is sent: the URL is fixed.
+    uninstall:
+      "https://www.vpnsmith.com/en/blog/self-hosted-vpn-vs-paid-vpn-2026?utm_source=chrome-extension&utm_medium=extension&utm_campaign=vpn-leak-guard&utm_content=uninstall",
     privacy: "https://github.com/ricco020/vpn-leak-guard/blob/main/PRIVACY.md"
   }
 };

@@ -32,9 +32,14 @@ async function applyWatchState() {
   }
 }
 
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener((details) => {
   applyWatchState();
+  if (details && details.reason === "install") {
+    chrome.tabs.create({ url: VLG.links.welcome });
+  }
 });
+// Fixed URL, set at every service worker start (cheap, idempotent).
+chrome.runtime.setUninstallURL(VLG.links.uninstall);
 chrome.runtime.onStartup.addListener(() => {
   applyWatchState();
 });
