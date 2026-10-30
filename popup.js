@@ -22,13 +22,45 @@
     el.className = "row-state " + cls;
     el.textContent = text;
   }
-  function setVerdict(cls, kicker, title, note) {
+  // One answer, one action: the verdict says Protected / Leak found / Check
+  // needed, and the button under it is the single next step for that answer.
+  function setVerdict(cls, kicker, title, note, action) {
     const v = $("verdict");
     v.className = "verdict " + cls;
     $("verdict-kicker").textContent = kicker;
     $("verdict-title").textContent = title;
     $("verdict-note").textContent = note;
+    const btn = $("verdict-action");
+    const an = $("verdict-action-note");
+    btn.onclick = null;
+    if (!action) { btn.classList.add("hidden"); an.classList.add("hidden"); return; }
+    btn.textContent = action.label;
+    btn.classList.remove("hidden");
+    if (action.href) {
+      btn.href = action.href;
+      btn.target = "_blank";
+    } else {
+      btn.removeAttribute("href");
+      btn.removeAttribute("target");
+      btn.onclick = (ev) => { ev.preventDefault(); action.run(); };
+    }
+    // The comparison is either the main action or a card below, never both.
+    $("cta-compare").classList.toggle("hidden", action.href === links.compare);
+    an.textContent = action.note || "";
+    an.classList.toggle("hidden", !action.note);
   }
+  const AFF_NOTE = "Opens a comparison on vpnsmith.com. It contains affiliate links: we may earn a commission.";
+  const actCompare = (label) => ({ label, href: links.compare, note: AFF_NOTE });
+  const actBlock = {
+    label: "Turn on WebRTC leak blocking",
+    run: () => { const t = $("block-toggle"); t.checked = true; t.dispatchEvent(new Event("change")); }
+  };
+  const actConfirm = {
+    label: "Confirm on a real web page",
+    href: links.fullTest,
+    note: "Chrome exempts extension pages from WebRTC blocking: the full test on vpnsmith.com runs as a normal site."
+  };
+  const actRetest = { label: "Run the test again", run: () => runTest() };
 
   async function lookupIp() {
     try {
@@ -224,33 +256,45 @@
     // Verdict
     const homeExposed = !!(homeIp && info && info.ip === homeIp);
     if (dnsLeak && !(!blocking && (leaked.length || homeLeak))) {
-      setVerdict("is-bad", "Leak detected", "DNS requests leave your VPN",
-        "Your DNS resolver can log every site you open. Use a VPN with its own DNS and leak protection.");
+      setVerdict("is-bad", "Leak found", "DNS requests leave your VPN",
+        "Your DNS resolver can log every site you open. A VPN with its own DNS and leak protection fixes it.",
+        actCompare("Fix it: VPNs that stop DNS leaks"));
       $("fix").classList.remove("hidden");
     } else if (!blocking && (leaked.length || homeLeak)) {
-      setVerdict("is-bad", "Leak detected", "WebRTC reveals another IP",
-        "Websites can read an address your VPN is supposed to hide. Turn on blocking below, or use a VPN that blocks WebRTC.");
+      setVerdict("is-bad", "Leak found", "WebRTC reveals another IP",
+        "Websites can read an address your VPN is supposed to hide. Blocking it takes one click.",
+        actBlock);
       $("fix").classList.remove("hidden");
     } else if (homeExposed) {
-      setVerdict("is-bad", "VPN off", "Your home IP is visible",
-        "Your public IP equals the home IP you saved. Connect your VPN, then re-test.");
+      setVerdict("is-bad", "Leak found", "Your home IP is visible",
+        "Your public IP equals the home IP you saved: your VPN is off or dropped. Connect it, then re-test.",
+        actCompare("No VPN yet? Compare the options"));
       $("fix").classList.remove("hidden");
     } else if (!info) {
-      setVerdict("is-warn", "Incomplete", "Could not read your public IP",
-        "The WebRTC part ran, but without a public IP the comparison is partial.");
+      setVerdict("is-warn", "Check needed", "Could not read your public IP",
+        "The WebRTC part ran, but without a public IP the comparison is partial.",
+        actRetest);
     } else if (blocking) {
-      setVerdict("is-ok", "Protected", "WebRTC blocked on websites",
-        "Chrome restricts WebRTC to the proxied route on every site. Keep it on while you use a VPN.");
+      setVerdict("is-ok", "No leak found", "WebRTC blocked on websites",
+        "Chrome restricts WebRTC to the proxied route on every site. Keep it on while you use a VPN.",
+        actConfirm);
     } else if (pub.length === 0) {
-      setVerdict("is-ok", "Protected", "No WebRTC leak",
-        "No public address came back through WebRTC. Blocking is still recommended on a VPN.");
+      setVerdict("is-ok", "No leak found", "No WebRTC leak",
+        "No public address came back through WebRTC. Blocking is still recommended on a VPN.",
+        actBlock);
     } else if (!homeIp) {
-      setVerdict("is-warn", "Unverified", "WebRTC matches your public IP",
-        "Fine if you are on a VPN. If this is your home IP, save it below so the guard can tell the difference.");
+      setVerdict("is-warn", "Check needed", "Is this IP your VPN or your home?",
+        "WebRTC shows the same address as your public IP. Fine on a VPN. If the VPN is off right now, save this IP as home in Settings so the guard can tell them apart.",
+        actBlock);
     } else {
-      setVerdict("is-ok", "Protected", "No WebRTC leak",
-        "WebRTC only shows your VPN address, and it is not your home IP.");
+      setVerdict("is-ok", "No leak found", "No WebRTC leak",
+        "WebRTC only shows your VPN address, and it is not your home IP.",
+        actConfirm);
     }
+    $("verdict-block").textContent = blocking ? "WebRTC blocking: on" : "WebRTC blocking: off";
+    $("verdict-block").className = "verdict-block " + (blocking ? "on" : "off");
+    $("checks-hint").textContent = [["IP", "ip"], ["WebRTC", "webrtc"], ["DNS", "dns"], ["Time", "tz"]]
+      .map(([l, k]) => `${l} ${$(k + "-state").textContent.toLowerCase()}`).join(" · ");
     await chrome.storage.local.set({ lastTest: { at: Date.now(), ip: info && info.ip, leak: !blocking && (leaked.length > 0 || !!homeLeak), dnsLeak } });
     return info;
   }
@@ -302,7 +346,7 @@
     $("watch-toggle").checked = !!watchEnabled;
     $("pro-text").textContent = homeIp
       ? "Background check every 2 minutes. You get a notification if your public IP falls back to your home IP."
-      : "Save your home IP above first: the watch compares against it.";
+      : "Save your home IP above first: the alert compares against it.";
   }
   $("watch-toggle").addEventListener("change", async (ev) => {
     await chrome.storage.local.set({ watchEnabled: ev.target.checked });

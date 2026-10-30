@@ -16,11 +16,23 @@
     </header>
 
     <section id="verdict" class="verdict is-testing" aria-live="polite">
-      <div class="verdict-kicker" id="verdict-kicker">Scanning</div>
+      <div class="verdict-status"><span class="verdict-dot" aria-hidden="true"></span><span id="verdict-kicker">Scanning</span></div>
       <h1 class="verdict-title" id="verdict-title">Testing your connection</h1>
       <p class="verdict-note" id="verdict-note">Public IP, WebRTC, DNS resolvers and timezone, checked in one click.</p>
+      <a id="verdict-action" class="primary action hidden" target="_blank" rel="noopener" href="#"></a>
+      <div class="action-note hidden" id="verdict-action-note"></div>
+      <div class="verdict-block" id="verdict-block"></div>
     </section>
 
+    <section id="fix" class="fix hidden">
+      <div class="fix-title">Long-term fix</div>
+      <a class="fix-link" id="cta-compare" target="_blank" rel="noopener">Paid VPN or your own server: which one stops this leak</a>
+      <a class="fix-link" id="cta-nord" target="_blank" rel="noopener">NordVPN: its Chrome extension blocks WebRTC leaks</a>
+      <div class="fix-note">Affiliate links on vpnsmith.com: we may earn a commission.</div>
+    </section>
+
+    <details class="checks" id="checks">
+      <summary>Test details <span class="sum-hint" id="checks-hint">IP, WebRTC, DNS, timezone</span></summary>
     <section class="rows">
       <div class="row" id="row-ip">
         <div class="row-head"><span class="row-label">PUBLIC IP</span><span class="row-state" id="ip-state">…</span></div>
@@ -43,7 +55,10 @@
         <div class="row-sub" id="tz-sub"></div>
       </div>
     </section>
+    </details>
 
+    <details class="settings" id="settings">
+      <summary>Settings <span class="sum-hint" id="settings-hint">WebRTC blocking, home IP, drop alerts</span></summary>
     <section class="controls">
       <label class="switch">
         <input type="checkbox" id="block-toggle" />
@@ -55,20 +70,6 @@
       </label>
       <button id="set-home" class="ghost wide" type="button">This is my home connection (no VPN right now)</button>
       <div class="hint" id="home-hint"></div>
-    </section>
-
-    <section id="fix" class="fix hidden">
-      <div class="fix-title">FIX IT</div>
-      <a class="card" id="cta-compare" target="_blank" rel="noopener">
-        <span class="card-k">Compare VPNs</span>
-        <span class="card-t">Paid VPN or your own server: which one stops this leak</span>
-        <span class="card-s">Comparison on vpnsmith.com. It contains affiliate links: we may earn a commission.</span>
-      </a>
-      <a class="card" id="cta-nord" target="_blank" rel="noopener">
-        <span class="card-k">Managed VPN</span>
-        <span class="card-t">NordVPN: its Chrome extension includes a WebRTC leak blocker</span>
-        <span class="card-s">Affiliate link: we may earn a commission.</span>
-      </a>
     </section>
 
     <section class="pro">
@@ -85,6 +86,7 @@
         </label>
       </div>
     </section>
+    </details>
 
     <footer class="foot">
       <a id="link-full" target="_blank" rel="noopener">Full leak test on vpnsmith.com</a>

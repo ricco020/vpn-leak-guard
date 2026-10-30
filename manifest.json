@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "VPN Leak Guard: WebRTC, DNS & IP Leak Test",
   "short_name": "VPN Leak Guard",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Free WebRTC leak test, DNS leak test and IP check in one click, plus WebRTC leak blocking and VPN drop alerts. No account.",
   "minimum_chrome_version": "110",
   "icons": {
