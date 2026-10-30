@@ -43,9 +43,9 @@ Free since 1.0.2 (29/10/2026, benchmark: the leader WebRTC Leak Prevent, ~90 k u
 
 ## Assets
 - Icon 128: icons/icon-128.png (generated 17/10/2026, image.py, 0.053 USD).
-- Screenshots 1280x800 (4): store/assets/screenshot-01..04.png, made 18/10/2026 from the real popup with documentation IPs (203.0.113.42 as VPN, 198.51.100.7 as home, no real IP), composed with the extension's own fonts (tools: /tmp/cws/capture.py + compose.py, kept in tools/store-assets.py).
+- Screenshots 1280x800 (4), redone 30/10/2026 for the 1.0.3 popup (upload at the next console session, in this order): screenshot-01-leak-test.png (WebRTC leak), screenshot-02-dns-leak.png (DNS leak), screenshot-03-blocked.png (WebRTC blocking on), screenshot-04-no-leak.png (no leak found). Real popup, mocked network answers, documentation IPs only (203.0.113.42 VPN, 198.51.100.7 home, 203.0.113.53 / 198.51.100.53 resolvers). Remove the old 02-fix and 04-pro (Pro 4.99 USD no longer exists). Rebuild: copy the extension to /tmp/vlg-ext, xvfb-run -a python3 tools/store-assets-capture.py, then python3 tools/store-assets-compose.py. Design judge 5.4 (served set 5.4).
 - Small promo tile 440x280: store/assets/promo-tile-440x280.png.
-- Chrome Web Store publisher: d2668f16-53c2-4f15-b0cb-b06a63206b45 (registered 18/10/2026, display name VPNSmith). ExtensionPay: extension `vpn-leak-guard` registered 18/10/2026, plan `pro` 4.99 USD once; Stripe not connected yet.
+- Chrome Web Store publisher: d2668f16-53c2-4f15-b0cb-b06a63206b45 (registered 18/10/2026, display name VPNSmith). ExtensionPay: registered 18/10/2026 but removed from the extension in 1.0.2 (100 % free).
 
 ## Cross-links to our sites (all tracked)
 - /go/nordvpn?src=ext-leak-guard&pos=leak (CJ, sid = ext-leak-guard)
