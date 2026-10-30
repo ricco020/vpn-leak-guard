@@ -44,6 +44,8 @@ def dns_route(r):
         return r.fulfill(status=200, content_type="application/json", body=json.dumps(DNS_LEAK if SCN["cur"] == "dns" else DNS_OK))
     return r.abort()
 def run(scn, ctx, ext_id):
+    recap = scn == "recap"
+    if recap: scn = "protected"
     SCN["cur"] = scn
     p = ctx.new_page()
     p.goto(f"chrome-extension://{ext_id}/popup.html#scn={scn}")
@@ -56,6 +58,17 @@ def run(scn, ctx, ext_id):
         p.evaluate("() => chrome.privacy.network.webRTCIPHandlingPolicy.set({value:'default'})")
     p.reload(); p.wait_for_timeout(9000)
     print(scn, "|", p.inner_text("#verdict").replace("\n", " / ")[:200])
+    if recap:
+        # 04: status recap of the same no-leak test (IP, WebRTC, DNS, time), details block only
+        p.add_style_tag(content="::-webkit-scrollbar{display:none}"); p.evaluate("() => { document.getElementById('checks').open = true; }"); p.wait_for_timeout(500)
+        top = p.evaluate("() => Math.floor(document.getElementById('checks').getBoundingClientRect().top) - 8")
+        bot = p.evaluate("() => Math.ceil(document.getElementById('checks').getBoundingClientRect().bottom) + 10")
+        p.set_viewport_size({"width": 380, "height": max(640, bot + 20)})
+        p.screenshot(path=f"{OUT}/recap.png", clip={"x": 0, "y": max(top, 0), "width": 372, "height": bot - max(top, 0)})
+        p.close(); return
+    # answer-only crop (header + verdict, no fix links nor footer) for the lead screenshot
+    vb = p.evaluate("() => Math.ceil(document.getElementById('verdict').getBoundingClientRect().bottom) + 6")
+    p.screenshot(path=f"{OUT}/{scn}-top.png", clip={"x": 0, "y": 0, "width": 380, "height": vb})
     # crop to the popup content (the body is shorter than the frame)
     h = p.evaluate("() => Math.ceil(Math.max(...[...document.body.children].map(e => e.getBoundingClientRect().bottom)) + 14)")
     p.screenshot(path=f"{OUT}/{scn}.png", clip={"x": 0, "y": 0, "width": 380, "height": min(h, 640)})
@@ -71,6 +84,6 @@ with sync_playwright() as pw:
     sw = ctx.service_workers
     if not sw: sw = [ctx.wait_for_event("serviceworker", timeout=20000)]
     ext_id = sw[0].url.split("/")[2]; print("ext id", ext_id)
-    for scn in (sys.argv[1:] or ["protected", "leak", "blocked", "dns"]):
+    for scn in (sys.argv[1:] or ["protected", "leak", "blocked", "dns", "recap"]):
         run(scn, ctx, ext_id)
     ctx.close()

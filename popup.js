@@ -27,7 +27,18 @@
   function setVerdict(cls, kicker, title, note, action) {
     const v = $("verdict");
     v.className = "verdict " + cls;
-    $("verdict-kicker").textContent = kicker;
+    const qual = " by these tests";
+    const k = $("verdict-kicker");
+    if (kicker.endsWith(qual)) {
+      // Honest scope: the verdict covers the checks run here, not every possible leak.
+      k.textContent = kicker.slice(0, -qual.length) + " ";
+      const q = document.createElement("span");
+      q.className = "verdict-qual";
+      q.textContent = qual.trim();
+      k.append(q);
+    } else {
+      k.textContent = kicker;
+    }
     $("verdict-title").textContent = title;
     $("verdict-note").textContent = note;
     const btn = $("verdict-action");
@@ -275,11 +286,11 @@
         "The WebRTC part ran, but without a public IP the comparison is partial.",
         actRetest);
     } else if (blocking) {
-      setVerdict("is-ok", "No leak found", "WebRTC blocked on websites",
+      setVerdict("is-ok", "No leak found by these tests", "WebRTC blocked on websites",
         "Chrome restricts WebRTC to the proxied route on every site. Keep it on while you use a VPN.",
         actConfirm);
     } else if (pub.length === 0) {
-      setVerdict("is-ok", "No leak found", "No WebRTC leak",
+      setVerdict("is-ok", "No leak found by these tests", "No WebRTC leak",
         "No public address came back through WebRTC. Blocking is still recommended on a VPN.",
         actBlock);
     } else if (!homeIp) {
@@ -287,7 +298,7 @@
         "WebRTC shows the same address as your public IP. Fine on a VPN. If the VPN is off right now, save this IP as home in Settings so the guard can tell them apart.",
         actBlock);
     } else {
-      setVerdict("is-ok", "No leak found", "No WebRTC leak",
+      setVerdict("is-ok", "No leak found by these tests", "No WebRTC leak",
         "WebRTC only shows your VPN address, and it is not your home IP.",
         actConfirm);
     }
