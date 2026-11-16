@@ -15,6 +15,8 @@ const VLG = {
     { urls: "stun:stun.cloudflare.com:3478" }
   ],
   WATCH_MINUTES_DEFAULT: 2,
+  // Last day (local time, inclusive) the Black Friday link is shown.
+  SEASON_UNTIL: "2026-12-02",
   links: {
     fullTest:
       "https://www.vpnsmith.com/en/tools/ip-leak-test?utm_source=chrome-extension&utm_medium=extension&utm_campaign=vpn-leak-guard",
@@ -33,6 +35,10 @@ const VLG = {
     // Shown by Chrome after removal. No data is sent: the URL is fixed.
     uninstall:
       "https://www.vpnsmith.com/en/blog/self-hosted-vpn-vs-paid-vpn-2026?utm_source=chrome-extension&utm_medium=extension&utm_campaign=vpn-leak-guard&utm_content=uninstall",
+    // 1.0.5: seasonal link, shown in the popup until SEASON_UNTIL only, then hidden
+    // by the date check in popup.js (no update needed to remove it).
+    season:
+      "https://www.vpnsmith.com/en/blog/black-friday-vpn-deals-2026?utm_source=chrome-extension&utm_medium=extension&utm_campaign=vpn-leak-guard&utm_content=bf2026",
     privacy: "https://github.com/ricco020/vpn-leak-guard/blob/main/PRIVACY.md"
   }
 };

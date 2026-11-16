@@ -52,3 +52,4 @@ Free since 1.0.2 (29/10/2026, benchmark: the leader WebRTC Leak Prevent, ~90 k u
 - /go/contabo-vps-2y?src=ext-leak-guard&pos=selfhost (CJ, sid = ext-leak-guard)
 - 1.0.4 : premiere installation = 1 onglet /en/tools/ip-leak-test utm_content=welcome (jamais a la mise a jour) ; desinstallation = /en/blog/self-hosted-vpn-vs-paid-vpn-2026 utm_content=uninstall (URL fixe, aucune donnee). Aucune permission ajoutee (tabs.create et setUninstallURL n'en demandent pas).
 - Tools on vpnsmith.com with utm_source=chrome-extension
+- 1.0.5 (16/11/2026) : lien saisonnier dans le popup vers /en/blog/black-friday-vpn-deals-2026 utm_content=bf2026, affiche jusqu au 02/12/2026 inclus puis masque par la date (config.js SEASON_UNTIL), mention d affiliation sur la meme carte. Aucune permission ajoutee, aucune requete ajoutee. Teste sous xvfb : visible le 16/11, masque le 03/12, 0 erreur.

@@ -183,3 +183,7 @@ details .row { border: 0; border-top: 1px solid var(--line); border-radius: 0; b
 .fix-link:hover { color: var(--ok); }
 .fix-note { color: #b8c4d6; font-size: 11.5px; margin-top: 6px; }
 .row-head, .rows-title { font-family: var(--mono); }
+
+/* 1.0.5 seasonal link */
+.season { border-color: rgba(255,106,61,.45); }
+.season .fix-link { border-bottom: 0; padding: 2px 0; }

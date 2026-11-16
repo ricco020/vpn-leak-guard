@@ -8,6 +8,14 @@
   $("link-full").href = links.fullTest;
   $("link-wg").href = links.wireguard;
   $("link-privacy").href = links.privacy;
+  // Seasonal link: visible through SEASON_UNTIL (local date, inclusive), independent of the test result.
+  (function () {
+    const end = new Date(VLG.SEASON_UNTIL + "T23:59:59");
+    if (links.season && Date.now() <= end.getTime()) {
+      $("cta-season").href = links.season;
+      $("season").classList.remove("hidden");
+    }
+  })();
 
 
   const PRIVATE_V4 = /^(10\.|127\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|0\.)/;
