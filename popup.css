@@ -187,3 +187,10 @@ details .row { border: 0; border-top: 1px solid var(--line); border-radius: 0; b
 /* 1.0.5 seasonal link */
 .season { border-color: rgba(255,106,61,.45); }
 .season .fix-link { border-bottom: 0; padding: 2px 0; }
+
+/* 1.0.7 review invite */
+.rate { position: relative; padding-right: 30px; }
+.rate .rate-text { margin-top: 0; }
+.rate .fix-link { border-bottom: 0; padding: 4px 0 0; }
+.rate-close { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: 16px; line-height: 1; cursor: pointer; }
+.rate-close:hover { color: var(--ink); background: var(--line); }

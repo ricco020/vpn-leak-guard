@@ -15,6 +15,8 @@ const VLG = {
     { urls: "stun:stun.cloudflare.com:3478" }
   ],
   WATCH_MINUTES_DEFAULT: 2,
+  // Review invite: shown from this popup opening on, until clicked or closed.
+  RATE_AFTER_OPENS: 3,
   // Last day (local time, inclusive) the Black Friday link is shown.
   SEASON_UNTIL: "2026-12-02",
   links: {
@@ -39,6 +41,8 @@ const VLG = {
     // by the date check in popup.js (no update needed to remove it).
     season:
       "https://www.vpnsmith.com/en/blog/black-friday-vpn-deals-2026?utm_source=chrome-extension&utm_medium=extension&utm_campaign=vpn-leak-guard&utm_content=bf2026",
+    // 1.0.7: review page of this item, offered from the 3rd popup opening, once.
+    review: "https://chromewebstore.google.com/detail/dlpikagegmmcphbaalmcedldgpnononn/reviews",
     privacy: "https://github.com/ricco020/vpn-leak-guard/blob/main/PRIVACY.md"
   }
 };

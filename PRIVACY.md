@@ -8,7 +8,7 @@ VPN Leak Guard is a Chrome extension published by Eric Gerard (vpnsmith.com).
 
 - **Public IP lookup.** When you open the popup or run a test, the extension asks `https://ipwho.is/` (fallback `https://api.ipify.org`) for your public IP address, ISP and timezone. That request necessarily sends your IP to that service, exactly as visiting any website does. We do not receive or store it on our servers; we have no servers.
 - **WebRTC test.** The extension opens a local RTCPeerConnection to public STUN servers (Google, Cloudflare) to see which addresses WebRTC would expose. Results are shown to you and never sent anywhere.
-- **Local storage only.** Your saved home IP, the last test result and your settings are stored in Chrome's local extension storage on your device. They are never uploaded.
+- **Local storage only.** Your saved home IP, the last test result, your settings and a count of popup openings (used only to offer, once, a link to the review page) are stored in Chrome's local extension storage on your device. They are never uploaded.
 - **Chrome WebRTC policy.** With your consent (the toggle), the extension changes Chrome's `webRTCIPHandlingPolicy` setting. You can revert it at any time from the popup.
 - **DNS leak test.** Each test asks `https://bash.ws/` (a public DNS leak test service) for a random test id, makes your browser look up a few random subdomains of `bash.ws`, then reads back the list of DNS resolvers that performed those lookups. bash.ws therefore sees your public IP and your resolvers' IPs, as any website would. Nothing else is sent.
 - **No payments.** Since version 1.0.2 the extension is entirely free and contains no payment code.

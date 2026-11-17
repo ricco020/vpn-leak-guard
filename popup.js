@@ -17,6 +17,19 @@
     }
   })();
 
+  // Review invite: asked of every user alike (no filter on the test result), from the
+  // RATE_AFTER_OPENS-th opening, hidden for good once clicked or closed. Nothing is sent.
+  (async function () {
+    const { opens = 0, rateDone = false } = await chrome.storage.local.get(["opens", "rateDone"]);
+    const n = opens + 1;
+    await chrome.storage.local.set({ opens: n });
+    if (rateDone || n < VLG.RATE_AFTER_OPENS || !links.review) return;
+    const done = () => { chrome.storage.local.set({ rateDone: true }); $("rate").classList.add("hidden"); };
+    $("cta-rate").href = links.review;
+    $("cta-rate").addEventListener("click", done);
+    $("rate-close").addEventListener("click", done);
+    $("rate").classList.remove("hidden");
+  })();
 
   const PRIVATE_V4 = /^(10\.|127\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|0\.)/;
   const isIPv4 = (s) => /^\d{1,3}(\.\d{1,3}){3}$/.test(s);
