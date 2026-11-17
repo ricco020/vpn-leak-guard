@@ -48,7 +48,7 @@ Free since 1.0.2 (29/10/2026, benchmark: the leader WebRTC Leak Prevent, ~90 k u
 - Chrome Web Store publisher: d2668f16-53c2-4f15-b0cb-b06a63206b45 (registered 18/10/2026, display name VPNSmith). ExtensionPay: registered 18/10/2026 but removed from the extension in 1.0.2 (100 % free).
 
 ## Cross-links to our sites (all tracked)
-- /go/nordvpn?src=ext-leak-guard&pos=leak (CJ, sid = ext-leak-guard)
+- /go/proton-vpn?src=ext-leak-guard&pos=leak (Proton Partners, aff_sub2 = ext-leak-guard)
 - /go/contabo-vps-2y?src=ext-leak-guard&pos=selfhost (CJ, sid = ext-leak-guard)
 - 1.0.4 : premiere installation = 1 onglet /en/tools/ip-leak-test utm_content=welcome (jamais a la mise a jour) ; desinstallation = /en/blog/self-hosted-vpn-vs-paid-vpn-2026 utm_content=uninstall (URL fixe, aucune donnee). Aucune permission ajoutee (tabs.create et setUninstallURL n'en demandent pas).
 - Tools on vpnsmith.com with utm_source=chrome-extension

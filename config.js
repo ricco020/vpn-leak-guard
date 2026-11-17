@@ -24,7 +24,7 @@ const VLG = {
       "https://www.vpnsmith.com/en/tools/wireguard-config-generator?utm_source=chrome-extension&utm_medium=extension&utm_campaign=vpn-leak-guard",
     compare:
       "https://www.vpnsmith.com/en/blog/self-hosted-vpn-vs-paid-vpn-2026?utm_source=chrome-extension&utm_medium=extension&utm_campaign=vpn-leak-guard&utm_content=leak-compare",
-    nordvpn: "https://www.vpnsmith.com/go/nordvpn?src=ext-leak-guard&pos=leak",
+    protonvpn: "https://www.vpnsmith.com/go/proton-vpn?src=ext-leak-guard&pos=leak",
     contabo: "https://www.vpnsmith.com/go/contabo-vps-2y?src=ext-leak-guard&pos=selfhost",
     site: "https://www.vpnsmith.com/?utm_source=chrome-extension&utm_medium=extension&utm_campaign=vpn-leak-guard",
     // 1.0.4: opened once, on first install only (never on update). The popup cannot

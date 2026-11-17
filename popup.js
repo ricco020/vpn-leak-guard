@@ -3,7 +3,7 @@
 (function () {
   const $ = (id) => document.getElementById(id);
   const links = VLG.links;
-  $("cta-nord").href = links.nordvpn;
+  $("cta-vpn").href = links.protonvpn;
   $("cta-compare").href = links.compare;
   $("link-full").href = links.fullTest;
   $("link-wg").href = links.wireguard;
