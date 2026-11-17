@@ -27,7 +27,7 @@ VPN Leak Guard is a Chrome extension published by Eric Gerard (vpnsmith.com).
 
 ## Affiliate links
 
-Links in the popup to vpnsmith.com, Proton VPN and Contabo are affiliate links: if you buy through them we may earn a commission at no cost to you. Clicking is always your choice. Until December 2, 2026 the popup also shows one seasonal link to a Black Friday VPN price comparison on vpnsmith.com (a page with affiliate links). The link is fixed, carries nothing about you, and disappears by itself after that date.
+Links in the popup to vpnsmith.com, Proton VPN (NordVPN in versions up to 1.0.5) and Contabo are affiliate links: if you buy through them we may earn a commission at no cost to you. Clicking is always your choice. Until December 2, 2026 the popup also shows one seasonal link to a Black Friday VPN price comparison on vpnsmith.com (a page with affiliate links). The link is fixed, carries nothing about you, and disappears by itself after that date.
 
 ## Contact
 
