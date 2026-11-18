@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard: тест утечки WebRTC, DNS и IP"
+ },
+ "extDesc": {
+  "message": "Бесплатный тест утечки WebRTC, DNS и IP, блокировка WebRTC и оповещение об обрыве VPN. Без аккаунта. Интерфейс на английском."
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard: проверить утечки"
+ }
+}

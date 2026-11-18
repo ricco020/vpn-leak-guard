@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard：WebRTC、DNS 和 IP 泄露测试"
+ },
+ "extDesc": {
+  "message": "一键免费测试 WebRTC、DNS 和 IP 泄露，并可阻止 WebRTC 泄露、在 VPN 断开时提醒。无需账号。界面为英文。"
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard：运行泄露测试"
+ }
+}

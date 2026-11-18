@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard: kiểm tra rò rỉ WebRTC, DNS và IP"
+ },
+ "extDesc": {
+  "message": "Kiểm tra rò rỉ WebRTC, DNS và IP miễn phí, chặn WebRTC và cảnh báo khi VPN bị ngắt. Không cần tài khoản. Giao diện tiếng Anh."
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard: chạy kiểm tra rò rỉ"
+ }
+}

@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard: WebRTC, DNS ve IP sızıntı testi"
+ },
+ "extDesc": {
+  "message": "Tek tıkla ücretsiz WebRTC, DNS ve IP sızıntı testi, WebRTC engelleme ve VPN kopma uyarısı. Hesap gerekmez. Arayüz İngilizce."
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard: sızıntı testi yap"
+ }
+}

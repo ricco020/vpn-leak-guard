@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard: WebRTC・DNS・IP リークテスト"
+ },
+ "extDesc": {
+  "message": "WebRTC・DNS・IP のリークをワンクリックで無料テスト。WebRTC ブロックと VPN 切断の通知付き。アカウント不要。画面は英語です。"
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard: リークテストを実行"
+ }
+}

@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard: tes kebocoran WebRTC, DNS & IP"
+ },
+ "extDesc": {
+  "message": "Tes kebocoran WebRTC, DNS dan IP gratis, blokir WebRTC dan peringatan saat VPN putus. Tanpa akun. Antarmuka bahasa Inggris."
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard: jalankan tes kebocoran"
+ }
+}

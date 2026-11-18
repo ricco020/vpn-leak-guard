@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard: WebRTC, DNS, IP 유출 테스트"
+ },
+ "extDesc": {
+  "message": "클릭 한 번으로 WebRTC, DNS, IP 유출을 무료로 테스트하고 WebRTC 차단과 VPN 끊김 알림을 제공합니다. 계정 불필요. 화면은 영어입니다."
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard: 유출 테스트 실행"
+ }
+}

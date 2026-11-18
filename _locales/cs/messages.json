@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard: test úniku WebRTC, DNS a IP"
+ },
+ "extDesc": {
+  "message": "Bezplatný test úniku WebRTC, DNS a IP, blokování WebRTC a upozornění na výpadek VPN. Bez účtu. Rozhraní v angličtině."
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard: spustit test úniku"
+ }
+}

@@ -1,0 +1,11 @@
+{
+ "extName": {
+  "message": "VPN Leak Guard: läcktest för WebRTC, DNS och IP"
+ },
+ "extDesc": {
+  "message": "Gratis läcktest för WebRTC, DNS och IP, WebRTC-blockering och varning när VPN tappas. Inget konto. Gränssnitt på engelska."
+ },
+ "actionTitle": {
+  "message": "VPN Leak Guard: kör läcktest"
+ }
+}
