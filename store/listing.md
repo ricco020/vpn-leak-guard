@@ -1,7 +1,7 @@
 # Chrome Web Store listing: VPN Leak Guard
 
 ## Name (45 max)
-VPN Leak Guard: WebRTC, DNS & IP Leak Test
+VPN Leak Guard: WebRTC Leak Blocker, DNS & IP Leak Test
 
 ## Summary (132 max)
 Free WebRTC leak test, DNS leak test and IP check in one click, plus WebRTC leak blocking and VPN drop alerts. No account.

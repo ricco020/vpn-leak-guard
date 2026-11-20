@@ -194,3 +194,6 @@ details .row { border: 0; border-top: 1px solid var(--line); border-radius: 0; b
 .rate .fix-link { border-bottom: 0; padding: 4px 0 0; }
 .rate-close { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: 16px; line-height: 1; cursor: pointer; }
 .rate-close:hover { color: var(--ink); background: var(--line); }
+
+#row-dns.needs-perm { cursor: pointer; outline: 1px dashed #5b6b85; outline-offset: 2px; border-radius: 8px; }
+#row-dns.needs-perm .row-main { text-decoration: underline; }

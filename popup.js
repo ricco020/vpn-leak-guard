@@ -151,7 +151,14 @@
   // DNS leak test through bash.ws: get a fresh id, make the browser resolve a few
   // random subdomains of it (the HTTPS requests fail, only the DNS lookup matters),
   // then read which resolvers asked bash.ws for those names.
+  // bash.ws stopped sending CORS headers (seen 20/11/2026): the DNS test needs
+  // an optional host permission, asked only when the user taps the DNS row.
+  const DNS_ORIGIN = { origins: ["https://bash.ws/*"] };
+  async function dnsAllowed() {
+    try { return await chrome.permissions.contains(DNS_ORIGIN); } catch (e) { return false; }
+  }
   async function dnsLeakTest() {
+    if (!(await dnsAllowed())) return { needPerm: true };
     try {
       const id = (await (await fetch(VLG.DNS_API + "/id", { cache: "no-store" })).text()).trim();
       if (!/^[a-z0-9]{6,40}$/i.test(id)) return null;
@@ -247,7 +254,19 @@
 
     // DNS row
     let dnsLeak = false;
-    if (!dnsRes) {
+    const dnsRow = $("row-dns");
+    dnsRow.classList.remove("needs-perm"); dnsRow.onclick = null;
+    if (dnsRes && dnsRes.needPerm) {
+      setState("dns-state", "", "TAP");
+      $("dns-value").textContent = "Run the DNS leak test";
+      $("dns-sub").textContent = "Tap here to allow requests to bash.ws, the public service that lists which DNS resolvers you use.";
+      dnsRow.classList.add("needs-perm");
+      dnsRow.onclick = async () => {
+        let ok = false;
+        try { ok = await chrome.permissions.request(DNS_ORIGIN); } catch (e) { ok = false; }
+        if (ok) runTest();
+      };
+    } else if (!dnsRes) {
       setState("dns-state", "", "N/A");
       $("dns-value").textContent = "DNS test unavailable";
       $("dns-sub").textContent = "The bash.ws test did not answer. Re-test in a minute.";
